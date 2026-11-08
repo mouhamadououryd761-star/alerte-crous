@@ -3,6 +3,10 @@ on:
   schedule:
     - cron: "*/5 * * * *"
   workflow_dispatch:
+    inputs:
+      test:
+        description: "Envoyer une notification de test"
+        default: "false"
 jobs:
   verifier:
     runs-on: ubuntu-latest
@@ -15,4 +19,4 @@ jobs:
       - run: python alerte_crous_cloud.py
         env:
           NTFY_SUJET: ${{ secrets.NTFY_SUJET }}
-          TEST: ${{ github.event_name == 'workflow_dispatch' && '1' || '0' }}
+          TEST: ${{ github.event.inputs.test == 'true' && '1' || '0' }}
